@@ -36,6 +36,6 @@ Follow up from the JQuery Table project, but using React as the frontend
 
 
 ## Credits
-
+React Table : https://react-table.tanstack.com/docs/overview
 
 #### Anything else that seems useful
