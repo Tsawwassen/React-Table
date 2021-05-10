@@ -43,6 +43,7 @@ class Table extends Component {
   displayHeader(header, index){
     return (<th key={index}>{header}</th>)
   }
+  
   /** Fill Table */
   fillTable(data, index){
     return(<tr key={index}> 
