@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Table.css';
+import './Table.css'; //Not the best styles for the table, but it will do
 
 
 
@@ -16,6 +16,7 @@ class Table extends Component {
 
     this.testButton = this.testButton.bind(this);
     this.displayHeader = this.displayHeader.bind(this);
+    this.fillTable = this.fillTable.bind(this);
   }
   /* Helper function to remove _id key */
   removeIDKey(item){
@@ -36,11 +37,17 @@ class Table extends Component {
 
   testButton(){
     console.table(this.state.table);
-    console.log(this.state.headers);
+    //console.log(this.state.headers);
   }
-
+  /** Fill Headers */
   displayHeader(header, index){
     return (<th key={index}>{header}</th>)
+  }
+  /** Fill Table */
+  fillTable(data, index){
+    return(<tr key={index}> 
+            {this.state.headers.map ( (objKey, index) => { return (<td key={index}>{data[objKey]}</td>) })}
+          </tr>);
   }
 
   render () {
@@ -54,9 +61,7 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td><td>2</td><td>3</td><td>4</td>
-            </tr>
+            {this.state.table.map((data, index) => this.fillTable(data, index))}
           </tbody>
         </table>
         <button onClick={this.testButton}>Test Button</button>
