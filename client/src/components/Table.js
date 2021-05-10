@@ -11,9 +11,17 @@ class Table extends Component {
         
 
     }
- 
+    console.log("hello");
   }
 
+  componentDidMount(){
+    fetch('/api/')
+    .then(res => res.json())
+     .then(data => {
+       console.log(data);
+     });
+    
+  }
 
 
   render () {
