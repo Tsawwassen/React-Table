@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "client": "cd client && npm start",
-    "server": "cd server && npm start"
+    "server": "cd server && npm start",
+    "db-seed": "cd server/db-seed && mongoimport --db react-table --collection items --file seed.json"
   },
   "repository": {
     "type": "git",

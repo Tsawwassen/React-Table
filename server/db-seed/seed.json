@@ -1,0 +1,5 @@
+{ "sku": "1000", "name": "Item 1", "desc": "Desc for Item 1", "price": 1.00, "inv_level": 1, "tax": 0.01 }
+{ "sku": "2000", "name": "Item 2", "desc": "Desc for Item 2", "price": 2.00, "inv_level": 2, "tax": 0.02 }
+{ "sku": "3000", "name": "Item 3", "desc": "Desc for Item 3", "price": 3.00, "inv_level": 3, "tax": 0.03 }
+{ "sku": "4000", "name": "Item 4", "desc": "Desc for Item 4", "price": 4.00, "inv_level": 4, "tax": 0.04 }
+{ "sku": "5000", "name": "Item 5", "desc": "Desc for Item 5", "price": 5.00, "inv_level": 5, "tax": 0.05 }
