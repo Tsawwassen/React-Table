@@ -8,17 +8,18 @@ class Table extends Component {
   constructor(props){
     super(props);
     this.state = {
-        
+        table:[]
 
     }
     console.log("hello");
   }
 
   componentDidMount(){
-    fetch('/api/')
+    fetch('/api/table')
     .then(res => res.json())
      .then(data => {
        console.log(data);
+       //this.setState(table:data.table)
      });
     
   }
