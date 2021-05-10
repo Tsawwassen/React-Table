@@ -23,6 +23,6 @@ router.get('/table', function(req, res, next) {
         .catch(error => {
             res.json({status: "error", data: error});
     });
-    //res.json({status: "success", data: "test data"});
 });
+
 module.exports = router;
