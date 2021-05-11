@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 
-
-
-
 class Table extends Component {
     
   constructor(props){
@@ -28,7 +25,7 @@ class Table extends Component {
     return t_headers;
   }
 
-
+  /** Populate State variables */
   componentDidMount(){
     fetch('/api/table')
     .then(res => res.json())
@@ -52,11 +49,13 @@ class Table extends Component {
     return t_table;
   }
 
+  /** Button used for testing */
   testButton(){
     console.table(this.state.table);
     //console.log(this.state.headers);
     
   }
+
   /** Fill Headers */
   displayHeader(header, index){
     return (<th key={index}>{header}</th>)
@@ -81,13 +80,14 @@ class Table extends Component {
           </tr>);
   }
 
+  /** Handle cell clicked */
   cellClicked(event){
-
     let t_rO = this.state.readOnly;
     t_rO[event.target.id[0]][event.target.id[2]] = false;
     this.setState({readOnly:t_rO});
   }
 
+  /** Handle cell cahnges */
   cellChanged(event){
     let t_value = event.target.value;
     let index = event.target.id;
