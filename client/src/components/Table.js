@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Table.css'; //Not the best styles for the table, but it will do
 
 
 
@@ -53,9 +52,9 @@ class Table extends Component {
 
   render () {
     return (
-      <div>
+      <div class="container">
         <h3>Table Component</h3>
-        <table>
+        <table class="table">
           <thead>
             <tr>
               {this.state.headers.map( (header, index) => this.displayHeader(header, index) )}
