@@ -81,6 +81,14 @@ class Table extends Component {
   }
 
   /** Handle cell clicked */
+  /** Dev Note, I don't think I need this section. 
+   *    The oringinal idea was to have table cell change to a text field when it was clicked, 
+   *    but the current working code just has a text field showing the data.
+   *    I cant think of a scenario where the user would click on the field and not want it to be changed.
+   *    The idea of a change element does seem cool, but I think doing it in this scenario it doesnt work.
+   *    Maybe come back to it using a simple form ( using one record )
+   * 
+   */
   cellClicked(event){
     let t_rO = this.state.readOnly;
     t_rO[event.target.id[0]][event.target.id[2]] = false;
