@@ -7,7 +7,8 @@ class Table extends Component {
     this.state = {
         table:[],
         headers:[],
-        readOnly: [[]]
+        readOnly: [[]],
+        tempUpdateColumns: {}
 
     }
 
@@ -16,13 +17,28 @@ class Table extends Component {
     this.fillTable = this.fillTable.bind(this);
     this.cellClicked = this.cellClicked.bind(this);
     this.cellChanged = this.cellChanged.bind(this);
+    this.updateColumnFields = this.updateColumnFields.bind(this);
+    this.updateColumns = this.updateColumns.bind(this);
+    this.updateColumnFieldChange = this.updateColumnFieldChange.bind(this);
+    this.clearTempUpdateColumns = this.clearTempUpdateColumns.bind(this);
+    this.createChangeObject = this.createChangeObject.bind(this);
   }
+
   /* Helper function to remove _id key */
   removeIDKey(item){
     //console.log(`inside removeIDKEy function ${array}`);
     let t_headers = Object.keys(item);
     t_headers.shift();
     return t_headers;
+  }
+
+  /** Helper function to create change object */
+  createChangeObject(headers){
+    let t_obj = {};
+    headers.forEach(header => {
+      t_obj[header] = "";
+    })
+    return t_obj;
   }
 
   /** Populate State variables */
@@ -33,8 +49,9 @@ class Table extends Component {
        let t = data.data;
        let h = this.removeIDKey(data.data[0]);
        let rO = this.createReadOnlyTable(h.length, t.length);
+       let changeFields = this.createChangeObject (h);
        
-       this.setState( {table:t, headers: h, readOnly:rO} );
+       this.setState( {table:t, headers: h, readOnly:rO, tempUpdateColumns:changeFields} );
      });
     
   }
@@ -51,7 +68,7 @@ class Table extends Component {
 
   /** Button used for testing */
   testButton(){
-    console.table(this.state.table);
+    console.table(this.state.tempUpdateColumns);
     //console.log(this.state.headers);
     
   }
@@ -80,6 +97,36 @@ class Table extends Component {
           </tr>);
   }
 
+  /** Create Update Columns fields */
+  updateColumnFields(headerID, index){
+    return(
+        <td key={index}><input id={headerID} type="text" className="updateColumns" value={this.state.tempUpdateColumns[headerID]} onChange={this.updateColumnFieldChange} /></td>
+    );
+  }
+
+  /** Update Columns Field Changed */
+  updateColumnFieldChange(event){
+    let t_change = this.state.tempUpdateColumns;
+    t_change[event.target.id] = event.target.value;
+    this.setState({tempUpdateColumns: t_change});
+  }
+
+  /** Clear Temp Update Columns */
+  clearTempUpdateColumns(){
+    //console.log("insideClearTempUpdateColumns");
+    let t_change = this.state.tempUpdateColumns;
+    Object.keys(t_change).forEach(k => t_change[k] = "");
+    this.setState({tempUpdateColumns: t_change});
+  }
+
+  updateColumns(event){
+    console.log(this.state.tempUpdateColumns);
+
+    //TODO : loop the tables to make the update
+
+    //TODO : clear the update columns fields
+    this.clearTempUpdateColumns();
+  }
   /** Handle cell clicked */
   /** Dev Note, I don't think I need this section. 
    *    The oringinal idea was to have table cell change to a text field when it was clicked, 
@@ -108,6 +155,8 @@ class Table extends Component {
     return (
       <div className="container">
         <h3>Table Component</h3>
+        <table className="table"><tbody><tr>{this.state.headers.map( (header, index) => this.updateColumnFields(header, index) )}</tr></tbody></table>
+        <button onClick={this.updateColumns}>Update columns</button>
         <table className="table">
           <thead>
             <tr>
