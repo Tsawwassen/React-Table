@@ -9,8 +9,8 @@ Make a React app that can update database records like it was an excel file
 2. Create a basic database (DONE)
 3. Pull database values into the react table (DONE)
 4. Update cell values (DONE)
-5. Update column values
-6. If an update has been done, and the user leaves the page, ask the user if they want to save the changes
+5. Update column values (DONE)
+6. Save table changes to the database, if user tries to leave before saving, ask the user if they want to save changes
 7. Filter the table
 8. Make updates to filtered rows
 
