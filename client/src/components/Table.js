@@ -119,14 +119,28 @@ class Table extends Component {
     this.setState({tempUpdateColumns: t_change});
   }
 
+  /** Updating table values from column update fields */
+  /** Dev Note, had an issue where the table variable saved in state was not getting copied correctly.
+   *    Turns out because the variable is an array of objects, it was getting copied by reference and not value.
+   *    -> This problem was solved by doing the below colde
+   *        -> this.state.table.map(a => ({...a}));
+   *    The TL;Dr is doing a map returns an array, and the spread syntax returns on JSON object by value.
+   */
   updateColumns(event){
-    console.log(this.state.tempUpdateColumns);
+    let t_table = this.state.table.map(a => ({...a}));
+    let t_change = this.state.tempUpdateColumns;
 
-    //TODO : loop the tables to make the update
+    Object.keys(t_change).forEach(key => {
+      if(t_change[key] === "") return; //Don't update the table values if the update column field is blank.
+      t_table.forEach(row => {
+        row[key] = t_change[key];
+      });
+    });
 
-    //TODO : clear the update columns fields
+    this.setState({table: t_table});
     this.clearTempUpdateColumns();
   }
+
   /** Handle cell clicked */
   /** Dev Note, I don't think I need this section. 
    *    The oringinal idea was to have table cell change to a text field when it was clicked, 
