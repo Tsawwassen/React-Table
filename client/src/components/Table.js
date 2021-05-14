@@ -8,7 +8,8 @@ class Table extends Component {
         table:[],
         headers:[],
         readOnly: [[]],
-        tempUpdateColumns: {}
+        tempUpdateColumns: {},
+        rowUpdated: []
 
     }
 
@@ -22,6 +23,7 @@ class Table extends Component {
     this.updateColumnFieldChange = this.updateColumnFieldChange.bind(this);
     this.clearTempUpdateColumns = this.clearTempUpdateColumns.bind(this);
     this.createChangeObject = this.createChangeObject.bind(this);
+    this.saveTable = this.saveTable.bind(this);
   }
 
   /* Helper function to remove _id key */
@@ -50,8 +52,10 @@ class Table extends Component {
        let h = this.removeIDKey(data.data[0]);
        let rO = this.createReadOnlyTable(h.length, t.length);
        let changeFields = this.createChangeObject (h);
+       let rU = new Array(t.length);
+       rU.fill(false);
        
-       this.setState( {table:t, headers: h, readOnly:rO, tempUpdateColumns:changeFields} );
+       this.setState( {table:t, headers: h, readOnly:rO, tempUpdateColumns:changeFields, rowUpdated: rU} );
      });
     
   }
@@ -129,15 +133,17 @@ class Table extends Component {
   updateColumns(event){
     let t_table = this.state.table.map(a => ({...a}));
     let t_change = this.state.tempUpdateColumns;
+    let t_rowChanged = this.state.rowUpdated.slice();
 
     Object.keys(t_change).forEach(key => {
       if(t_change[key] === "") return; //Don't update the table values if the update column field is blank.
-      t_table.forEach(row => {
+      t_table.forEach((row, index) => {
         row[key] = t_change[key];
+        t_rowChanged[index] = true;
       });
     });
-
-    this.setState({table: t_table});
+    
+    this.setState({table: t_table, rowUpdated: t_rowChanged});
     this.clearTempUpdateColumns();
   }
 
@@ -156,14 +162,40 @@ class Table extends Component {
     this.setState({readOnly:t_rO});
   }
 
-  /** Handle cell cahnges */
+  /** Handle cell changes */
   cellChanged(event){
     let t_value = event.target.value;
     let index = event.target.id;
     let t_table = this.state.table;
+    let t_rowChanged = this.state.rowUpdated.slice();
+    t_rowChanged[index[0]] = true;
     t_table[event.target.id[0]][this.state.headers[index[2]]] = t_value;
-    this.setState({table : t_table});
+    this.setState({table : t_table, rowUpdated: t_rowChanged});
   }
+
+  saveTable(event){
+    //console.log(`save table`);
+    //console.log(this.state.rowUpdated);
+
+    this.state.rowUpdated.forEach( (isUpdated, index) =>{
+      console.log(isUpdated);
+      if(isUpdated === false) return;
+      console.log(this.state.table[index]);
+
+      let requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(this.state.table[index])
+      };
+        
+      fetch('/api/table', requestOptions)
+      .then(response => response.json())
+      .then(status => {
+              console.log(status);
+      });
+    });
+  }
+  
 
   render () {
     return (
@@ -182,6 +214,7 @@ class Table extends Component {
           </tbody>
         </table>
         <button onClick={this.testButton}>Test Button</button>
+        <button onClick={this.saveTable}>Save</button>
       </div>
     );
   }
