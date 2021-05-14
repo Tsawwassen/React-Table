@@ -25,4 +25,18 @@ router.get('/table', function(req, res, next) {
     });
 });
 
+/** UPDATE Table */
+/** Dev Note
+ *      when making the update query, I think I can make the query variable look nicer (ie not in a hash like below)
+ * 
+ */
+router.put('/table', function(req, res, next){
+    Items.updateOne({_id: req.body._id}, {$set: req.body})
+    .then(item => {
+        res.json({status: "updated"})
+    }).catch(error => {
+        res.json({status: "error"});
+    });
+});
+
 module.exports = router;
